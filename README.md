@@ -1,92 +1,95 @@
-<!--
-Use this template as a quick starting point when writing a README for your Pulumi example. To start, copy this file to your example folder and rename it to `README.md`. Once you've reviewed the template, delete the comments and begin writing your accompanying README for your example Pulumi application.
+## Pulumi POC with github actions
 
-Use GitHub's "Preview Changes" functionality to make sure everything is formatted correctly in Markdown.
+## Description
 
-Readers should be able to follow your example from beginning to end. Please be sure to list all prerequisites, and test your guide from start to finish. Cut and paste commands from the README into your terminal to make sure there aren't typos or inaccuracies. If you find yourself executing a command that isn't in the README, make sure to add it so the readers end up with a complete tutorial. See [EC2 Linux WebServer Instance](https://www.pulumi.com/docs/tutorials/aws/ec2-webserver/) for an example of a tutorial following this template. Note that the featured tutorial is multi-language whereas the exampleas in this repo are cloud and language-specific (except for the ones with the `cloud` prefix).
--->
+This Pulumi project sets up a network, an Application Load Balancer (ALB), and an Auto Scaling Group (ASG) using custom Pulumi packages. Check the architecture diagram
 
+## Project Structure
 
-# [App Description] using [Service or Tool]
+Network: Creates a Virtual Private Cloud (VPC) along with public and private subnets.
+ALB: Creates an Application Load Balancer and a target group.
+ASG: Creates an Auto Scaling Group with instances that are registered to the target group.
 
-<!-- Use Title Case for all Titles -->
-<!-- Most of the examples are transformed into tutorials on https://www.pulumi.com/docs/tutorials/ and are sorted by cloud and language. There is no need to include the cloud provider name or the language in the title.
+### Prerequisites
 
-<!-- Our examples have a specific structure. Learn more at CONTRIBUTING.md -->
+Before running this project, ensure you have the following installed:
 
-Introductory paragraph about the example that explains what problem it solves and why the reader should care. If possible, include use cases.
+Go
+Pulumi
+AWS CLI
 
-In this tutorial, we will [configure/set up/build/deploy] [some thing]...
+### Architecture of webServer deployment:
 
-When you're finished, you'll be able to...
+![diagram](POC.drawio.png "diagram")
 
-## Prerequisites
+## Configuration 
 
-<!-- The Prerequisites section includes an ordered list of required installation and configuration steps before the reader can deploy the Pulumi example. -->
+The infrastructure configuration is managed through the infra.yaml file, and the user data script for the ASG instances is provided in the userdata.sh file.
+```
+vpc:
+  name: vpc
+  cidr_block: <vpc-cidr>
 
-1. [Install Pulumi](https://www.pulumi.com/docs/get-started/install/)
-1. Configure [cloud] <!-- We have setup pages for our popular cloud providers at https://www.pulumi.com/docs/intro/cloud-providers/<cloud-provider>/setup/ -->
-1. Install [language runtime] <!-- We have setup pages for our supported language runtimes at https://www.pulumi.com/docs/intro/languages/<language>/ -->
-1. (Optional) List any other accounts needed, such as Twitter, Slack, or other services.
+subnets:
+  - cidr_block: <public-cidr>
+    az: us-east-1a
+    public: true
 
-<!-- Example:
-1. [Install Pulumi](https://www.pulumi.com/docs/get-started/install/)
-1. [Configure your AWS Credentials](https://www.pulumi.com/docs/intro/cloud-providers/aws/setup/)
-1. [Install Node.js](https://www.pulumi.com/docs/intro/languages/javascript/)
--->
+  - cidr_block: <private-cidr>
+    az: us-east-1a
+    public: false
 
-## Deploy the App
+  - cidr_block: <private-cidr>
+    az: us-east-1b
+    public: false
 
-### Step 1: Create a directory and cd into it
+alb:
+  port: 80
+  allowed_cidrs:
+    - 0.0.0.0/0
 
-For Pulumi examples, we typically start by creating a directory and changing into it. Then, we create a new Pulumi project from a template. For example, `azure-javascript`.
+asg:
+  name: "some-name"
+  ami-id: "ami-123"
+  instance-type: "t2.micro"
+  min-size: 1
+  max-size: 1
+  desired-capacity: 1
+  ports:
+    - 80
+```
 
-First....
-
-Next...
-
-Finally...
-
-![Alt text for screen readers](/path/to/img.png)
-
-<!--
-If showing a command, explain the command first by talking about what it does. Then show the command and its output. If the output is too long, you can clip it with `...` and only show the relevant parts. If your README includes images, make sure to include an alt text.
-
-Now transition to the next step by telling the reader what's next. If you're adding to a file, make sure to clearly explain that.
--->
-
-
-### Step 2: Sentence case
-Another introduction
-
-Your content
-
-Transition to the next step.
-
-### Step 3
-
-Another introduction
-
-Your content
-
-Transition to the next step.
-
-## Clean Up
-
-<!--We generally ask the reader to run `pulumi destroy` and tear down the resources to avoid incurring any costs. -->
+### Running the Project locally
 
 
-## Summary
+* Log-ing to aws console and create an IAM user with enough priviledges.
+* Gather the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY and set them as env variables 
+```
+export AWS_ACCESS_KEY_ID="<AWS_ACCESS_KEY_ID>"
+export AWS_SECRET_ACCESS_KEY="<AWS_SECRET_ACCESS_KEY>"
 
-In this tutorial, you [configured/set up/built/deployed] [something]. Now you can....
+git clone https://github.com/yourusername/your-repo-name.git
+cd your-repo-name
 
-<!-- Give a quick recap of what the readers have learned and optionally provide places for further exploration. -->
+go mod tidy
 
-## Next Steps
+pulumi up
 
-<!-- Optionally include an unordered list of relevant Pulumi tutorials. -->
 
-<!-- Example:
-- [Create a load-balanced, hosted NGINX container service](https://www.pulumi.com/docs/tutorials/aws/ecs-fargate/)
-- [Create an EC2-based WebServer and associated infrastructure](https://www.pulumi.com/docs/tutorials/aws/ec2-webserver/)
--->
+```
+### Outputs
+
+The following outputs will be exported:
+
+vpcID: The ID of the VPC created.
+privateSubnetIds: The IDs of the private subnets created.
+publicSubnetIds: The IDs of the public subnets created.
+targetGroupArn: The ARN of the target group created.
+securityGroupID: The ID of the security group created.
+
+### GitHub Actions
+This project uses GitHub Actions to preview the infrastructure changes on pull requests and updates the infrastructure when is merged . Check pulumi-preview.yml and pulumi-up.yml
+
+## Author
+
+Juan Felipe Reyes Marlés  
