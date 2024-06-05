@@ -39,17 +39,13 @@ You can preview the infrastructure changes both in the GitHub workflow and throu
 
 #### GitHub Workflow
 
-The GitHub Actions workflow (`pulumi-preview.yml`) is configured to provide a preview of the infrastructure changes whenever a pull request is opened. This allows you to review the proposed changes before they are applied.
-
-
+The GitHub Actions workflow (`pulumi-preview.yml`) is configured to provide a preview of the infrastructure changes whenever a pull request is opened.This allows you to review the proposed changes before they are applied.The (`pulumi-up.yml`) is configured to update the infrstruture after the pull request is merged and reviewed. Make sure to change stack-name under the pulumi actions with the name of your org/stack.
 
 #### Pulumi UI
 
 Additionally, you can visualize and review the infrastructure changes using the Pulumi UI. After running the preview command locally or in the GitHub workflow, navigate to the Pulumi UI dashboard. There, you'll find a detailed visualization of the proposed changes, including the resources to be created, updated, or deleted.
 
 ![Pulumi UI Preview](pulumi-preview.png)
-
-
 
 ## Configuration
 
