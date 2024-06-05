@@ -2,7 +2,7 @@
 
 ## Description
 
-This Pulumi project sets up a network, an Application Load Balancer (ALB), and an Auto Scaling Group (ASG) using custom Pulumi [packages](https://github.com/jfr992/pulumi-packages). Check the architecture diagram below.
+This Pulumi project sets up a network, an Application Load Balancer (ALB), and an Auto Scaling Group (ASG) using custom Pulumi [packages](https://github.com/jfr992/pulumi-packages) developed for this project.  It has been designed with the concept of an Infrastructure as Code (IaC) library in mind, allowing developers to seamlessly integrate infrastructure provisioning alongside their applications. Developers can provide the infrastructure configuration in a YAML file (infra.yaml), which serves as the input for the project. The infrastructure creation can be orchestrated through a main.go (check this example) program, which calls the package containing different resources. It's intended that the infrastructure creation process occurs only once before deployment and testing, ensuring consistency and reproducibility. Check the architecture diagram below.
 
 ## Project Structure
 
@@ -16,7 +16,22 @@ Before running this project, ensure you have the following installed:
 
 - [Go](https://golang.org/doc/install)
 - [Pulumi](https://www.pulumi.com/docs/get-started/install/)
-- [AWS CLI](https://aws.amazon.com/cli/)
+
+Make sure to follow the installation instructions provided in the documentation links for each prerequisite.
+
+### Previewing Changes
+
+You can preview the infrastructure changes both in the GitHub workflow and through the Pulumi UI.
+
+#### GitHub Workflow
+
+The GitHub Actions workflow (`pulumi-preview.yml`) is configured to provide a preview of the infrastructure changes whenever a pull request is opened. This allows you to review the proposed changes before they are applied.
+
+#### Pulumi UI
+
+Additionally, you can visualize and review the infrastructure changes using the Pulumi UI. After running the preview command locally or in the GitHub workflow, navigate to the Pulumi UI dashboard. There, you'll find a detailed visualization of the proposed changes, including the resources to be created, updated, or deleted.
+
+![Pulumi UI Preview](pulumi-preview.png)
 
 ### Architecture of WebServer Deployment
 
@@ -75,8 +90,8 @@ export AWS_SECRET_ACCESS_KEY="<AWS_SECRET_ACCESS_KEY>"
 3. Clone the repository and navigate to the project directory:
 
 ```sh
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/jfr992/pulumi-poc.git
+cd pulumi-poc
 ```
 
 4. Install dependencies:
