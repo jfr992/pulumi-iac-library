@@ -4,6 +4,10 @@
 
 This Pulumi project sets up a network, an Application Load Balancer (ALB), and an Auto Scaling Group (ASG) using custom Pulumi [packages](https://github.com/jfr992/pulumi-packages) developed for this project.  It has been designed with the concept of an Infrastructure as Code (IaC) library in mind, allowing developers to seamlessly integrate infrastructure provisioning alongside their applications. Developers can provide the infrastructure configuration in a YAML file (infra.yaml), which serves as the input for the project. The infrastructure creation can be orchestrated through a main.go (check this example) program, which calls the package containing different resources. It's intended that the infrastructure creation process occurs only once before deployment and testing, ensuring consistency and reproducibility. Check the architecture diagram below.
 
+### Architecture of WebServer Deployment
+
+![diagram](POC.drawio.png "diagram")
+
 ## Project Structure
 
 - **Network**: Creates a Virtual Private Cloud (VPC) along with public and private subnets.
@@ -19,6 +23,16 @@ Before running this project, ensure you have the following installed:
 
 Make sure to follow the installation instructions provided in the documentation links for each prerequisite.
 
+### Setting Up GitHub Secrets
+
+To securely manage your AWS access keys and Pulumi access token, you can set them up as GitHub secrets:
+
+1. **AWS Access Keys**: Generate an AWS access key ID and secret access key in the AWS IAM console. Then, go to your GitHub repository's settings, navigate to the "Secrets" section, and add these keys as secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+2. **Pulumi Access Token**: Generate a Pulumi access token in the Pulumi console by navigating to **Settings** > **Access Tokens** and clicking on **Create Access Token**. Once generated, add the token as a secret named `PULUMI_ACCESS_TOKEN` in your GitHub repository's settings.
+
+By setting up these secrets, you can securely authenticate with AWS and Pulumi without exposing sensitive information in your codebase.
+
 ### Previewing Changes
 
 You can preview the infrastructure changes both in the GitHub workflow and through the Pulumi UI.
@@ -27,15 +41,15 @@ You can preview the infrastructure changes both in the GitHub workflow and throu
 
 The GitHub Actions workflow (`pulumi-preview.yml`) is configured to provide a preview of the infrastructure changes whenever a pull request is opened. This allows you to review the proposed changes before they are applied.
 
+
+
 #### Pulumi UI
 
 Additionally, you can visualize and review the infrastructure changes using the Pulumi UI. After running the preview command locally or in the GitHub workflow, navigate to the Pulumi UI dashboard. There, you'll find a detailed visualization of the proposed changes, including the resources to be created, updated, or deleted.
 
 ![Pulumi UI Preview](pulumi-preview.png)
 
-### Architecture of WebServer Deployment
 
-![diagram](POC.drawio.png "diagram")
 
 ## Configuration
 
@@ -116,9 +130,6 @@ The following outputs will be exported:
 - `targetGroupArn`: The ARN of the target group created.
 - `securityGroupID`: The ID of the security group created.
 
-### GitHub Actions
-
-This project uses GitHub Actions to preview the infrastructure changes on pull requests and updates the infrastructure when changes are merged. Check `pulumi-preview.yml` and `pulumi-up.yml`.
 
 ## Author
 
