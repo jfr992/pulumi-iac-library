@@ -5,7 +5,7 @@ on:
 
 jobs:
   preview:
-    name: Update
+    name: Preview
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
