@@ -1,4 +1,4 @@
-# Pulumi POC with GitHub Actions
+# Pulumi POC with GitHub Actions (WIP)
 
 ## Description
 
