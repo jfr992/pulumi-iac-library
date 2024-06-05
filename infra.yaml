@@ -1,0 +1,28 @@
+vpc:
+  name: vpc
+  cidr_block: 192.168.0.0/16
+
+subnets:
+  - cidr_block: 192.168.1.0/24
+    az: us-east-1a
+    public: true
+
+  - cidr_block: 192.168.2.0/24
+    az: us-east-1a
+    public: false
+
+
+alb:
+  port: 80
+  allowed_cidrs:
+    - 0.0.0.0/0
+
+asg:
+  name: "pulumi-poc"
+  ami-id: "ami-04e8b3e527208c8cf"
+  instance-type: "t2.micro"
+  min-size: 1
+  max-size: 1
+  desired-capacity: 1
+  ports:
+    - 80
