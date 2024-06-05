@@ -1,8 +1,8 @@
-name: Pulumi preview
+name: Pulumi up
 on:
-  pull_request:
-    branches: [main]
-
+  push:
+    branches:
+      - main
 jobs:
   preview:
     name: Update
@@ -19,10 +19,10 @@ jobs:
       - name: Downloading dependencies 📦
         run: go mod download
 
-      - name: Planning infrastructure 🚀
+      - name: Deploying infrastructure 🚀
         uses: pulumi/actions@v4
         with:
-          command: preview
+          command: up
           stack-name: ${{ env.STACK_NAME }}
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}

@@ -1,7 +1,8 @@
 name: network
 runtime: go
-description: create a basic network
+description: create example infrastructure
 config:
+  aws:region: us-east-1
   pulumi:tags:
     value:
       pulumi:template: aws-go
